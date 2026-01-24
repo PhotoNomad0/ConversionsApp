@@ -3,7 +3,73 @@ function clamp(value, min, max) {
 }
 
 function latLonToMaidenhead(lat, lon, precision = 6) {
+  // Accept numbers OR DMS/decimal strings, e.g.:
+  // "37.7749", "37°46'29\"N", "37 46 29 N", "37:46:29N", "122°25'10\"W"
+  function parseCoord(value, kind /* "lat" | "lon" */) {
+    if (Number.isFinite(value)) return value;
+    if (typeof value !== "string") return NaN;
+
+    const s0 = value.trim();
+    if (!s0) return NaN;
+
+    // 1) Plain decimal in a string
+    const asNum = Number(s0);
+    if (Number.isFinite(asNum)) return asNum;
+
+    // 2) DMS parsing
+    // Normalize common symbols and separators.
+    const s = s0
+      .toUpperCase()
+      .replace(/[º]/g, "°")
+      .replace(/[′’]/g, "'")
+      .replace(/[″]/g, '"')
+      .replace(/,/g, " ")
+      .replace(/\s+/g, " ");
+
+    // Hemisphere letter can appear anywhere; we remove it after detecting.
+    const hemiMatch = s.match(/[NSEW]/);
+    const hemi = hemiMatch ? hemiMatch[0] : null;
+    const sNoHemi = hemi ? s.replace(/[NSEW]/g, " ").trim() : s;
+
+    // Extract numeric parts (deg, min, sec). Allow ":" or spaces or symbols.
+    // Examples accepted:
+    //  - 37°46'29"
+    //  - 37 46 29
+    //  - 37:46:29
+    //  - -37 46 29
+    const nums = sNoHemi.match(/[+-]?\d+(?:\.\d+)?/g);
+    if (!nums || nums.length === 0) return NaN;
+    if (nums.length > 3) return NaN;
+
+    const deg = Number(nums[0]);
+    const min = nums.length >= 2 ? Number(nums[1]) : 0;
+    const sec = nums.length >= 3 ? Number(nums[2]) : 0;
+
+    if (![deg, min, sec].every(Number.isFinite)) return NaN;
+    if (min < 0 || min >= 60) return NaN;
+    if (sec < 0 || sec >= 60) return NaN;
+
+    // Sign: explicit negative wins; otherwise hemisphere controls sign.
+    const explicitNeg = deg < 0 || s0.trim().startsWith("-");
+    const absDeg = Math.abs(deg) + min / 60 + sec / 3600;
+
+    let signed = absDeg;
+    if (hemi) {
+      if (kind === "lat" && (hemi === "S")) signed = -absDeg;
+      else if (kind === "lat" && (hemi === "N")) signed = absDeg;
+      else if (kind === "lon" && (hemi === "W")) signed = -absDeg;
+      else if (kind === "lon" && (hemi === "E")) signed = absDeg;
+      else return NaN; // e.g. "E" used for latitude
+    }
+    if (explicitNeg) signed = -absDeg;
+
+    return signed;
+  }
+
+  lat = parseCoord(lat, "lat");
+  lon = parseCoord(lon, "lon");
   if (!Number.isFinite(lat) || !Number.isFinite(lon)) throw new Error("Invalid lat/lon");
+
   lat = clamp(lat, -90, 90);
   lon = ((lon + 180) % 360 + 360) % 360 - 180; // normalize to [-180,180)
 
@@ -87,13 +153,14 @@ function maidenheadToLatLon(grid) {
 
 // --- UI wiring ---
 document.getElementById("toGrid").addEventListener("click", () => {
-  const lat = Number(document.getElementById("lat").value);
-  const lon = Number(document.getElementById("lon").value);
+  const latRaw = document.getElementById("lat").value;
+  const lonRaw = document.getElementById("lon").value;
+
   try {
-    const grid = latLonToMaidenhead(lat, lon, 6);
+    const grid = latLonToMaidenhead(latRaw, lonRaw, 6);
     document.getElementById("gridOut").textContent = grid;
   } catch (e) {
-    document.getElementById("gridOut").textContent = String(e.message || e);
+    document.getElementById("gridOut").textContent = "Invalid lat/lon";
   }
 });
 
