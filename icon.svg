@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Ham radio grid locator icon">
+  <defs>
+    <!-- Light background -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8FAFC"/>
+      <stop offset="1" stop-color="#EEF2F7"/>
+    </linearGradient>
+
+    <!-- Cyan accent -->
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#00D5FF"/>
+      <stop offset="1" stop-color="#00A3FF"/>
+    </linearGradient>
+
+    <!-- Soft shadow -->
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#0B1220" flood-opacity="0.14"/>
+    </filter>
+
+    <!-- Clip for rounded app icon -->
+    <clipPath id="clip">
+      <rect x="32" y="32" width="448" height="448" rx="96" ry="96"/>
+    </clipPath>
+  </defs>
+
+  <!-- Rounded background -->
+  <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="url(#bg)" filter="url(#shadow)"/>
+
+  <g clip-path="url(#clip)">
+    <!-- Subtle grid -->
+    <g opacity="0.35" stroke="#94A3B8" stroke-width="2">
+      <!-- vertical -->
+      <path d="M128 64V448"/>
+      <path d="M192 64V448"/>
+      <path d="M256 64V448"/>
+      <path d="M320 64V448"/>
+      <path d="M384 64V448"/>
+      <!-- horizontal -->
+      <path d="M64 128H448"/>
+      <path d="M64 192H448"/>
+      <path d="M64 256H448"/>
+      <path d="M64 320H448"/>
+      <path d="M64 384H448"/>
+    </g>
+
+    <!-- Crosshair ring -->
+    <circle cx="256" cy="256" r="140" fill="none" stroke="#0F172A" stroke-opacity="0.85" stroke-width="14"/>
+    <circle cx="256" cy="256" r="96" fill="none" stroke="#0F172A" stroke-opacity="0.28" stroke-width="10"/>
+
+    <!-- Crosshair ticks -->
+    <g stroke="#0F172A" stroke-opacity="0.85" stroke-width="14" stroke-linecap="round">
+      <path d="M256 92V128"/>
+      <path d="M256 384V420"/>
+      <path d="M92 256H128"/>
+      <path d="M384 256H420"/>
+    </g>
+
+    <!-- Antenna mast (cyan) -->
+    <g stroke="url(#cyan)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M256 338V210"/>
+      <path d="M256 210L220 250"/>
+      <path d="M256 210L292 250"/>
+    </g>
+
+    <!-- Antenna base -->
+    <g>
+      <path d="M210 356C210 328 233 306 261 306C288 306 310 328 310 356"
+            fill="none" stroke="#0F172A" stroke-opacity="0.85" stroke-width="14" stroke-linecap="round"/>
+      <path d="M196 372H316" fill="none" stroke="#0F172A" stroke-opacity="0.85" stroke-width="14" stroke-linecap="round"/>
+    </g>
+
+    <!-- RF waves (cyan accent) -->
+    <g fill="none" stroke="url(#cyan)" stroke-width="12" stroke-linecap="round" opacity="0.95">
+      <path d="M206 182C222 166 242 156 256 156C270 156 290 166 306 182"/>
+      <path d="M184 160C206 138 232 124 256 124C280 124 306 138 328 160"/>
+    </g>
+
+    <!-- Center dot -->
+    <circle cx="256" cy="256" r="10" fill="#0F172A" fill-opacity="0.85"/>
+    <circle cx="256" cy="256" r="6" fill="url(#cyan)"/>
+  </g>
+
+  <!-- Border for crispness -->
+  <rect x="32" y="32" width="448" height="448" rx="96" ry="96" fill="none" stroke="#0F172A" stroke-opacity="0.08" stroke-width="4"/>
+</svg>
