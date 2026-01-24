@@ -151,6 +151,32 @@ function maidenheadToLatLon(grid) {
   return { lat: lat + latSize / 2, lon: lon + lonSize / 2 };
 }
 
+function toDms(value, kind /* "lat" | "lon" */) {
+  if (!Number.isFinite(value)) return "—";
+
+  const hemi =
+    kind === "lat" ? (value < 0 ? "S" : "N")
+      : kind === "lon" ? (value < 0 ? "W" : "E")
+        : "";
+
+  const abs = Math.abs(value);
+  const deg = Math.floor(abs);
+  const minFloat = (abs - deg) * 60;
+  const min = Math.floor(minFloat);
+  const sec = (minFloat - min) * 60;
+
+  // Keep seconds to 2 decimals; tweak as you like
+  return `${deg}°${String(min).padStart(2, "0")}'${sec.toFixed(2).padStart(5, "0")}"${hemi}`;
+}
+
+function fToC(f) {
+  return (f - 32) * (5 / 9);
+}
+
+function cToF(c) {
+  return (c * (9 / 5)) + 32;
+}
+
 // --- UI wiring ---
 document.getElementById("toGrid").addEventListener("click", () => {
   const latRaw = document.getElementById("lat").value;
@@ -168,12 +194,37 @@ document.getElementById("toLatLon").addEventListener("click", () => {
   const grid = document.getElementById("grid").value;
   try {
     const { lat, lon } = maidenheadToLatLon(grid);
-    document.getElementById("latOut").textContent = lat.toFixed(6);
-    document.getElementById("lonOut").textContent = lon.toFixed(6);
+
+    document.getElementById("latOut").textContent = `${lat.toFixed(6)} (${toDms(lat, "lat")})`;
+    document.getElementById("lonOut").textContent = `${lon.toFixed(6)} (${toDms(lon, "lon")})`;
   } catch (e) {
     document.getElementById("latOut").textContent = "—";
     document.getElementById("lonOut").textContent = String(e.message || e);
   }
+});
+
+document.getElementById("toC").addEventListener("click", () => {
+  const fRaw = document.getElementById("tempF").value.trim();
+  const f = Number(fRaw);
+  if (!Number.isFinite(f)) {
+    document.getElementById("tempOut").textContent = "Invalid Fahrenheit";
+    return;
+  }
+  const c = fToC(f);
+  document.getElementById("tempC").value = c.toFixed(2);
+  document.getElementById("tempOut").textContent = `${f.toFixed(2)} °F = ${c.toFixed(2)} °C`;
+});
+
+document.getElementById("toF").addEventListener("click", () => {
+  const cRaw = document.getElementById("tempC").value.trim();
+  const c = Number(cRaw);
+  if (!Number.isFinite(c)) {
+    document.getElementById("tempOut").textContent = "Invalid Celsius";
+    return;
+  }
+  const f = cToF(c);
+  document.getElementById("tempF").value = f.toFixed(2);
+  document.getElementById("tempOut").textContent = `${c.toFixed(2)} °C = ${f.toFixed(2)} °F`;
 });
 
 // --- Service Worker registration (offline) ---
