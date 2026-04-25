@@ -177,6 +177,30 @@ function cToF(c) {
   return (c * (9 / 5)) + 32;
 }
 
+function feetToMeters(feet) {
+  return feet * 0.3048;
+}
+
+function metersToFeet(meters) {
+  return meters / 0.3048;
+}
+
+function poundsToKg(pounds) {
+  return pounds * 0.45359237;
+}
+
+function kgToPounds(kg) {
+  return kg / 0.45359237;
+}
+
+function milesToKm(miles) {
+  return miles * 1.609344;
+}
+
+function kmToMiles(km) {
+  return km / 1.609344;
+}
+
 // --- UI wiring ---
 document.getElementById("toGrid").addEventListener("click", () => {
   const latRaw = document.getElementById("lat").value;
@@ -225,6 +249,78 @@ document.getElementById("toF").addEventListener("click", () => {
   const f = cToF(c);
   document.getElementById("tempF").value = f.toFixed(2);
   document.getElementById("tempOut").textContent = `${c.toFixed(2)} °C = ${f.toFixed(2)} °F`;
+});
+
+document.getElementById("toMeters").addEventListener("click", () => {
+  const feetRaw = document.getElementById("feet").value.trim();
+  const feet = Number(feetRaw);
+  if (!Number.isFinite(feet)) {
+    document.getElementById("lengthOut").textContent = "Invalid feet";
+    return;
+  }
+  const meters = feetToMeters(feet);
+  document.getElementById("meters").value = meters.toFixed(2);
+  document.getElementById("lengthOut").textContent = `${feet.toFixed(2)} ft = ${meters.toFixed(2)} m`;
+});
+
+document.getElementById("toFeet").addEventListener("click", () => {
+  const metersRaw = document.getElementById("meters").value.trim();
+  const meters = Number(metersRaw);
+  if (!Number.isFinite(meters)) {
+    document.getElementById("lengthOut").textContent = "Invalid meters";
+    return;
+  }
+  const feet = metersToFeet(meters);
+  document.getElementById("feet").value = feet.toFixed(2);
+  document.getElementById("lengthOut").textContent = `${meters.toFixed(2)} m = ${feet.toFixed(2)} ft`;
+});
+
+document.getElementById("toKg").addEventListener("click", () => {
+  const poundsRaw = document.getElementById("pounds").value.trim();
+  const pounds = Number(poundsRaw);
+  if (!Number.isFinite(pounds)) {
+    document.getElementById("weightOut").textContent = "Invalid pounds";
+    return;
+  }
+  const kg = poundsToKg(pounds);
+  document.getElementById("kg").value = kg.toFixed(2);
+  document.getElementById("weightOut").textContent = `${pounds.toFixed(2)} lb = ${kg.toFixed(2)} kg`;
+});
+
+document.getElementById("toPounds").addEventListener("click", () => {
+  const kgRaw = document.getElementById("kg").value.trim();
+  const kg = Number(kgRaw);
+  if (!Number.isFinite(kg)) {
+    document.getElementById("weightOut").textContent = "Invalid kilograms";
+    return;
+  }
+  const pounds = kgToPounds(kg);
+  document.getElementById("pounds").value = pounds.toFixed(2);
+  document.getElementById("weightOut").textContent = `${kg.toFixed(2)} kg = ${pounds.toFixed(2)} lb`;
+});
+
+document.getElementById("toKm").addEventListener("click", () => {
+  const milesRaw = document.getElementById("miles").value.trim();
+  const miles = Number(milesRaw);
+  if (!Number.isFinite(miles)) {
+    document.getElementById("distanceOut").textContent = "Invalid miles";
+    return;
+  }
+  const km = milesToKm(miles);
+  document.getElementById("km").value = km.toFixed(2);
+  document.getElementById("distanceOut").textContent = `${miles.toFixed(2)} mi = ${km.toFixed(2)} km`;
+});
+
+document.getElementById("toMiles").addEventListener("click", () => {
+  const kmRaw = document.getElementById("km").value.trim();
+  const km = Number(kmRaw);
+  if (!Number.isFinite(km)) {
+    document.getElementById("distanceOut").textContent = "Invalid kilometers";
+    return;
+  }
+  const miles = kmToMiles(km);
+  document.getElementById("miles").value = miles.toFixed(2);
+  document.getElementById("distanceOut").textContent = `${km.toFixed(2)} km = ${miles.toFixed(2)} mi`;
 });
 
 // --- Service Worker registration (offline) ---
