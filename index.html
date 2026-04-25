@@ -12,36 +12,18 @@
     body { font-family: system-ui, -apple-system, sans-serif; margin: 16px; }
     input, button { font-size: 16px; padding: 10px; width: 100%; box-sizing: border-box; }
     .row { display: grid; gap: 10px; margin: 12px 0; }
-    .card { padding: 12px; border: 1px solid #ddd; border-radius: 10px; }
+    .card { padding: 12px; border: 1px solid #ddd; border-radius: 10px; margin: 12px 0; }
+    .card summary { cursor: pointer; font-size: 1.5em; font-weight: bold; }
     .muted { color: #555; font-size: 13px; }
     code { background: #f5f5f5; padding: 2px 6px; border-radius: 6px; }
   </style>
 </head>
 <body>
-  <h1>Lat/Lon ⇄ Maidenhead Grid</h1>
+  <h1>Conversions</h1>
   <p class="muted">Works offline once opened at least once and added to Home Screen on iPhone.</p>
 
-  <div class="card">
-    <h2>Lat/Lon → Grid</h2>
-    <div class="row">
-      <input id="lat" inputmode="decimal" placeholder="Latitude (e.g. 37.7749)" />
-      <input id="lon" inputmode="decimal" placeholder="Longitude (e.g. -122.4194)" />
-      <button id="toGrid">Convert to Grid</button>
-      <div>Grid: <code id="gridOut">—</code></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Grid → Lat/Lon (center of square)</h2>
-    <div class="row">
-      <input id="grid" autocapitalize="characters" placeholder="Grid (e.g. CM87wj)" />
-      <button id="toLatLon">Convert to Lat/Lon</button>
-      <div>Lat: <code id="latOut">—</code> Lon: <code id="lonOut">—</code></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Temperature ⇄</h2>
+  <details class="card">
+    <summary>Temperature F⇄C</summary>
     <div class="row">
       <input id="tempF" inputmode="decimal" placeholder="Fahrenheit (e.g. 68)" />
       <button id="toC">Convert to Celsius</button>
@@ -49,7 +31,26 @@
       <button id="toF">Convert to Fahrenheit</button>
       <div>Result: <code id="tempOut">—</code></div>
     </div>
-  </div>
+  </details>
+  
+  <details class="card">
+    <summary>Lat/Lon → Grid</summary>
+    <div class="row">
+      <input id="lat" inputmode="decimal" placeholder="Latitude (e.g. 37.7749)" />
+      <input id="lon" inputmode="decimal" placeholder="Longitude (e.g. -122.4194)" />
+      <button id="toGrid">Convert to Grid</button>
+      <div>Grid: <code id="gridOut">—</code></div>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>Maidenhead Grid → Lat/Lon (center of square)</summary>
+    <div class="row">
+      <input id="grid" autocapitalize="characters" placeholder="Grid (e.g. CM87wj)" />
+      <button id="toLatLon">Convert to Lat/Lon</button>
+      <div>Lat: <code id="latOut">—</code> Lon: <code id="lonOut">—</code></div>
+    </div>
+  </details>
 
   <script src="/app.js"></script>
 </body>
