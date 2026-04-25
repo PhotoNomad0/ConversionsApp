@@ -231,7 +231,7 @@ document.getElementById("toF").addEventListener("click", () => {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
-      await navigator.serviceWorker.register("/sw.js");
+      await navigator.serviceWorker.register("sw.js");
     } catch {
       // If registration fails, the app still works online.
     }
