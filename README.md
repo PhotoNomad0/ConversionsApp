@@ -48,12 +48,16 @@ python3 -m http.server 8000
 ```
 
 Then open:
-```text http://localhost:8000/``` 
+```text 
+http://localhost:8000/
+``` 
 
 ### Option 2: Node local server
 
 If you have Node.js installed, you can use:
-```bash npx serve .```
+```bash 
+npx serve .
+```
 
 Then open the local URL shown in your terminal.
 
