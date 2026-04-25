@@ -1,6 +1,6 @@
 {
-  "name": "Lat/Lon ⇄ Maidenhead Grid",
-  "short_name": "GridConv",
+  "name": "Conversions App",
+  "short_name": "Conversions",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#0b1220",
